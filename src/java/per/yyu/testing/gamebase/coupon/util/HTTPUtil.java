@@ -14,10 +14,10 @@ public class HTTPUtil {
     private ByteArrayOutputStream byteArrayOutputStream;
     private InputStream inputStream;
 
-    public void postSendForCouponConsume(CouponTestingModel couponTestingModel) {
-        List<String> couponCodes = new ArrayList<>();
-        couponCodes = couponTestingModel.getCouponCodes();
+    public void couponConsumePostSend(CouponTestingModel couponTestingModel) {
+        List<String> couponCodes = couponTestingModel.getCouponCodes();
         List<String> postResponses = new ArrayList<>();
+
         try {
             for(int couponCodeArrayIndex = 0; couponCodeArrayIndex < couponTestingModel.getCouponListSize() - 1; couponCodeArrayIndex++)
             {

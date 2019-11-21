@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import per.yyu.testing.gamebase.coupon.model.CouponTestingModel;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class POIUtil {
             hssfSheet = hssfWorkbook.getSheetAt(0);
             couponTestingModel.setCouponListSize(hssfSheet.getPhysicalNumberOfRows());
 
-            List<String> temp = new ArrayList<>();
+            List<String> couponCodesInExcel = new ArrayList<>();
 
             for(int i = 1; i < couponTestingModel.getCouponListSize(); i++) {
                 hssfRow = hssfSheet.getRow(i);
@@ -37,25 +38,48 @@ public class POIUtil {
 
                 switch (hssfCell.getCellType()) {
                     case XSSFCell.CELL_TYPE_FORMULA:
-                        temp.add(i - 1, hssfCell.getCellFormula());
+                        couponCodesInExcel.add(i - 1, hssfCell.getCellFormula());
                         break;
                     case XSSFCell.CELL_TYPE_NUMERIC:
-                        temp.add(i - 1, hssfCell.getNumericCellValue() + "");
+                        couponCodesInExcel.add(i - 1, hssfCell.getNumericCellValue() + "");
                         break;
                     case XSSFCell.CELL_TYPE_STRING:
-                        temp.add(i - 1, hssfCell.getStringCellValue());
+                        couponCodesInExcel.add(i - 1, hssfCell.getStringCellValue());
                         break;
                     case XSSFCell.CELL_TYPE_BLANK:
-                        temp.add(i - 1, hssfCell.getBooleanCellValue() + "");
+                        couponCodesInExcel.add(i - 1, hssfCell.getBooleanCellValue() + "");
                         break;
                     case XSSFCell.CELL_TYPE_ERROR:
-                        temp.add(i - 1, hssfCell.getErrorCellValue() + "");
+                        couponCodesInExcel.add(i - 1, hssfCell.getErrorCellValue() + "");
                         break;
                 }
             }
 
-            couponTestingModel.setCouponCodes(temp);
+            couponTestingModel.setCouponCodes(couponCodesInExcel);
             System.out.println(couponTestingModel.getCouponCodes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void recordTestResult(CouponTestingModel couponTestingModel) {
+        try {
+            List<String> couponCodes = couponTestingModel.getCouponCodes();
+            List<String> consumeIsSuccessful = couponTestingModel.getCouponConsumeIsSuccessful();
+            List<String> consumeResult = couponTestingModel.getCouponConsumeTestResult();
+            List<String> items = new ArrayList<>();
+            for (int i = 1; i < couponTestingModel.getCouponListSize(); i++) {
+                row = hssfSheet.createRow(i);
+                row.createCell(0).setCellValue(couponCodes.get(i - 1));
+                row.createCell(1).setCellValue(consumeIsSuccessful.get(i - 1));
+                row.createCell(2).setCellValue(consumeResult.get(i - 1));
+            }
+
+            fileOutputStream = new FileOutputStream(new File(couponTestingModel.getDownloadedCouponListFilePath()));
+            hssfWorkbook.write(fileOutputStream);
+
+            hssfWorkbook.close();
+            fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

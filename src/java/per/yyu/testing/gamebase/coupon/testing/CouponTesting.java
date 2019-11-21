@@ -21,6 +21,10 @@ public class CouponTesting {
         poiUtil.readCouponCodes(couponTestingModel, couponTestingModel.getDownloadedCouponListFilePath());
 
         httpUtil = new HTTPUtil();
-        httpUtil.postSendForCouponConsume(couponTestingModel);
+        httpUtil.couponConsumePostSend(couponTestingModel);
+
+        jsonUtil = new JSONUtil();
+        jsonUtil.analysisCouponConsumeResult(couponTestingModel);
+        poiUtil.recordTestResult(couponTestingModel);
     }
 }

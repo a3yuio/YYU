@@ -1,0 +1,8 @@
+Eev8vflo
+A@QJKJ94JG4NRJJMAN
+C:\Users\AD01534624\Downloads\couponCode_Eev8vflo_71879.xls
+http://alpha-api-gamebase.cloud.toast.com:11080/tcgb-gateway/v1.2
+Content-Type
+application/json; charset=UTF-8
+X-Secret-Key
+WSxibSKNNU0xxwYW
